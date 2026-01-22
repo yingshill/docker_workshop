@@ -1,5 +1,16 @@
 
+___________________________________________________________
+Q3
 
+SELECT COUNT(*)
+FROM green_taxi_2025_11
+WHERE FORMAT(lpep_pickup_datetime, 'yyyy-MM') = '2025-11' 
+	AND FORMAT(lpep_dropoff_datetime, 'yyyy-MM') = '2025-11'
+	AND trip_distance <= 1;
+
+
+___________________________________________________________
+Q4
 
 SELECT lpep_pickup_datetime
 FROM green_taxi_2025_11
@@ -10,3 +21,41 @@ WHERE trip_distance = (
 );
 
 2025-11-14
+
+____________________________________________________________
+Q5
+
+SELECT 
+    z."Zone", 
+    SUM(t."total_amount") AS total_amount_sum
+FROM 
+    green_taxi_2025_11 t
+JOIN 
+    zones z ON t."PULocationID" = z."LocationID"
+WHERE 
+    t."lpep_pickup_datetime"::date = '2025-11-18'
+GROUP BY 
+    z."Zone"
+ORDER BY 
+    total_amount_sum DESC
+LIMIT 1;
+
+____________________________________________________________
+Q6
+
+SELECT 
+    zdo."Zone" AS dropoff_zone,
+    MAX(t."tip_amount") AS max_tip
+FROM 
+    green_taxi_2025_11 t
+JOIN 
+    zones zpu ON t."PULocationID" = zpu."LocationID"
+JOIN 
+    zones zdo ON t."DOLocationID" = zdo."LocationID"
+WHERE 
+    zpu."Zone" = 'East Harlem North'
+GROUP BY 
+    zdo."Zone"
+ORDER BY 
+    max_tip DESC
+LIMIT 1;

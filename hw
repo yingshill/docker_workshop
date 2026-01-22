@@ -1,0 +1,12 @@
+
+
+
+SELECT lpep_pickup_datetime
+FROM green_taxi_2025_11
+WHERE trip_distance = (
+	SELECT MAX(trip_distance)
+	FROM green_taxi_2025_11
+	WHERE trip_distance  < 100
+);
+
+2025-11-14
